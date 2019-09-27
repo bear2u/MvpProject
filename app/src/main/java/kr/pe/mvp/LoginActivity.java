@@ -8,10 +8,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 public class LoginActivity extends AppCompatActivity implements LoginActivityContract.View{
 
-    LoginActivityPresenter presenter;
-    LoginModel model;
+    @Inject
+    LoginActivityContract.Presenter presenter;
+
 
     private EditText firstName;
     private EditText lastName;
@@ -22,14 +25,11 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ((App) getApplication()).getComponent().inject(this);
+
         firstName = (EditText) findViewById(R.id.loginActivity_firstName_editText);
         lastName = (EditText) findViewById(R.id.loginActivity_lastName_editText);
         login = (Button) findViewById(R.id.loginActivity_login_button);
-
-        model = new LoginModel();
-        presenter = new LoginActivityPresenter(model);
-        presenter.setView(this);
-        presenter.getCurrentUser();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +39,15 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCon
 
             }
         });
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.setView(this);
+        presenter.getCurrentUser();
     }
 
     @Override
@@ -75,5 +79,6 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityCon
     @Override
     public void showUserSavedMessage() {
         Toast.makeText(this, "User saved successfully", Toast.LENGTH_SHORT).show();
+
     }
 }

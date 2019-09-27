@@ -8,6 +8,10 @@ public class LoginModel implements LoginActivityContract.Model{
         this.repository = new UserRepository();
     }
 
+    public LoginModel(LoginRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public void createUser(String name, String lastName) {
 

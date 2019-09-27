@@ -45,6 +45,5 @@ public class LoginActivityPresenter implements LoginActivityContract.Presenter{
                 view.setLastName(user.getLastName());
             }
         }
-
     }
 }
